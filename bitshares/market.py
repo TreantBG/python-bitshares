@@ -413,7 +413,7 @@ class Market(BlockchainInstance, dict):
             "fee": {"amount": 0, "asset_id": "1.3.0"},
             "seller": account["id"],
             "amount_to_sell": {
-                "amount": int(float(amount) * float(price) * 10 ** self["base"]["precision"]),
+                "amount": int(float(amount) * round(float(price) * 10 ** self["base"]["precision"])),
                 "asset_id": self["base"]["id"]
             },
             "min_to_receive": {
@@ -496,7 +496,7 @@ class Market(BlockchainInstance, dict):
                 "asset_id": self["quote"]["id"]
             },
             "min_to_receive": {
-                "amount": int(float(amount) * float(price) * 10 ** self["base"]["precision"]),
+                "amount": int(float(amount) * round(float(price) * 10 ** self["base"]["precision"])),
                 "asset_id": self["base"]["id"]
             },
             "expiration": formatTimeFromNow(expiration),
