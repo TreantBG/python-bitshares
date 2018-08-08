@@ -11,6 +11,7 @@ from .exceptions import (
 )
 from .instance import BlockchainInstance
 import logging
+
 log = logging.getLogger(__name__)
 
 
@@ -27,14 +28,15 @@ class ProposalBuilder:
             your own instance of transaction builder (optional)
         :param instance blockchain_instance: Blockchain instance
     """
+
     def __init__(
-        self,
-        proposer,
-        proposal_expiration=None,
-        proposal_review=None,
-        parent=None,
-        *args,
-        **kwargs
+            self,
+            proposer,
+            proposal_expiration=None,
+            proposal_review=None,
+            parent=None,
+            *args,
+            **kwargs
     ):
         BlockchainInstance.__init__(self, *args, **kwargs)
 
@@ -129,11 +131,12 @@ class TransactionBuilder(dict):
     """ This class simplifies the creation of transactions by adding
         operations and signers.
     """
+
     def __init__(
-        self,
-        tx={},
-        proposer=None,
-        **kwargs
+            self,
+            tx={},
+            proposer=None,
+            **kwargs
     ):
         BlockchainInstance.__init__(self, **kwargs)
         self.clear()
@@ -299,8 +302,9 @@ class TransactionBuilder(dict):
         # We now wrap everything into an actual transaction
         ops = transactions.addRequiredFees(self.blockchain.rpc, ops,
                                            asset_id=self.fee_asset_id)
+        expiration_time = self.expiration or self.blockchain.expiration
         expiration = transactions.formatTimeFromNow(
-            self.expiration or self.blockchain.expiration
+            expiration_time if expiration_time > 100 else 3000
         )
         ref_block_num, ref_block_prefix = transactions.getBlockParams(
             self.blockchain.rpc)
@@ -379,7 +383,6 @@ class TransactionBuilder(dict):
             return
 
         ret = self.json()
-
         if self.blockchain.nobroadcast:
             log.warning("Not broadcasting anything!")
             self.clear()

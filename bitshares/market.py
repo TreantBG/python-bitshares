@@ -506,7 +506,6 @@ class Market(BlockchainInstance, dict):
             # Make blocking broadcasts
             prevblocking = self.blockchain.blocking
             self.blockchain.blocking = returnOrderId
-
         tx = self.blockchain.finalizeOp(order, account["name"], "active", **kwargs)
 
         if returnOrderId:
