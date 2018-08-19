@@ -551,7 +551,6 @@ class FilledOrder(Price):
     def __init__(self, order, **kwargs):
 
         BlockchainInstance.__init__(self, **kwargs)
-
         if isinstance(order, dict) and "price" in order:
             super(FilledOrder, self).__init__(
                 order.get("price"),
@@ -563,16 +562,18 @@ class FilledOrder(Price):
 
         elif isinstance(order, dict):
             # filled orders from account history
+            if "time" in order:
+                self["time"] = formatTimeString(order["time"])
             if "op" in order:
                 order = order["op"]
+                
             base_asset = kwargs.get("base_asset", order["receives"]["asset_id"])
             super(FilledOrder, self).__init__(
                 order,
                 base_asset=base_asset,
             )
             self.update(order)
-            if "time" in order:
-                self["time"] = formatTimeString(order["time"])
+
             if "account_id" in order:
                 self["account_id"] = order["account_id"]
 

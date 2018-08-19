@@ -330,7 +330,7 @@ class Market(BlockchainInstance, dict):
         account = Account(account, full=True, blockchain_instance=self.blockchain)
 
         r = []
-        orders = account["limit_orders"]
+        orders = account.openorders
         for o in orders:
             if ((
                 o["sell_price"]["base"]["asset_id"] == self["base"]["id"] and
